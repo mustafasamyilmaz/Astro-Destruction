@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.4f;
 
     [SerializeField]
-    private float _lives = 3;
+    private int _lives = 3;
 
     [SerializeField]
     private SpawnManager _spawnManager;
@@ -31,20 +31,32 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shieldVis;
 
+    [SerializeField]
+    private int _score;
+
+    private UIManager _uiManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(_spawnManager == null)
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        transform.position = new Vector3(0, -3, 0);
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+        if (_spawnManager == null)
         {
             Debug.LogError("Spawnmanager is null");
         }
 
-        else
+        if(_uiManager == null)
         {
-            _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-            transform.position = new Vector3(0, -3, 0);
+            Debug.LogError("_uiManager is null");
         }
+
         
+       
+
+
     }
 
     // Update is called once per frame
@@ -89,11 +101,14 @@ public class Player : MonoBehaviour
             _shieldVis.SetActive(false);
             return;
         }
+
         _lives--;
+        _uiManager.UpdateLives(_lives);
         if(_lives < 1)
         { 
             Destroy(this.gameObject);
             _spawnManager.OnPlayerDeath();
+            
         }
     }
     public void TripleShotActive()
@@ -127,5 +142,11 @@ public class Player : MonoBehaviour
             _speed = 7f;
         }
         
+    }
+
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
     }
 }
