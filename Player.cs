@@ -36,12 +36,23 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager;
 
+    [SerializeField]
+    private GameObject Damaged1, Damaged2;
+
+    [SerializeField]
+    private AudioSource[] _Sounds = new AudioSource[3];
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         transform.position = new Vector3(0, -3, 0);
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+       
+
 
         if (_spawnManager == null)
         {
@@ -52,6 +63,10 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("_uiManager is null");
         }
+
+
+
+        
 
         
        
@@ -80,8 +95,11 @@ public class Player : MonoBehaviour
 
     void ShootLaser()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+       
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
+
+            Sound(0);
             _canFire = Time.time + _fireRate;
             if (_isTripleShotActive)
             {
@@ -91,6 +109,8 @@ public class Player : MonoBehaviour
             {
                 Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.02f, 0), Quaternion.identity);
             }
+
+            
         }
     }
     public void Damage()
@@ -103,11 +123,23 @@ public class Player : MonoBehaviour
         }
 
         _lives--;
+
+        if (_lives == 2)
+        {
+            Damaged1.SetActive(true);
+        }
+
+        else if (_lives == 1)
+        {
+            Damaged2.SetActive(true);
+        }
         _uiManager.UpdateLives(_lives);
         if(_lives < 1)
-        { 
+        {
+            Sound(1);
             Destroy(this.gameObject);
             _spawnManager.OnPlayerDeath();
+            
             
         }
     }
@@ -148,5 +180,10 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    public void Sound(int ronaldo)
+    {
+        _Sounds[ronaldo].Play();
     }
 }

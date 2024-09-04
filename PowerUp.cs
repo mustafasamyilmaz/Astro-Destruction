@@ -27,6 +27,7 @@ public class PowerUp : MonoBehaviour
             Player _player = other.transform.GetComponent<Player>();
             if(_player != null)
             {
+                _player.Sound(2);
                 switch (_PowerUpID)
                 {
                     case 0:

@@ -41,9 +41,10 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
+            _player.Sound(1);
             _animator.SetTrigger("OnEnemyDeath");
             _speed = 0;
-            Destroy(this.gameObject, 1.5f);
+            Destroy(this.gameObject, 1.0f);
         }
 
         if (other.tag == "Laser")
@@ -53,9 +54,10 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(10);
             }
+            _player.Sound(1);
             _animator.SetTrigger("OnEnemyDeath");
             _speed = 0;
-            Destroy(this.gameObject,1.5f);
+            Destroy(this.gameObject,1.0f);
         }
 
     }
