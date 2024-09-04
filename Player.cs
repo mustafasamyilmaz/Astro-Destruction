@@ -42,6 +42,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioSource[] _Sounds = new AudioSource[3];
 
+    [SerializeField]
+    private Animator _animator;
+
 
 
 
@@ -51,7 +54,12 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         transform.position = new Vector3(0, -3, 0);
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-       
+        _animator = GetComponent<Animator>();
+
+        if(_animator == null)
+        {
+            Debug.LogError("Animator is null");
+        }
 
 
         if (_spawnManager == null)
@@ -88,6 +96,24 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         transform.Translate(direction * _speed * Time.deltaTime);
+        if (horizontalInput < 0)  // Moving left
+        {
+            _animator.SetBool("isMovingLeft", true);
+            _animator.SetBool("isMovingRight", false);
+            _animator.SetBool("isIdle", false);
+        }
+        else if (horizontalInput > 0)  // Moving right
+        {
+            _animator.SetBool("isMovingLeft", false);
+            _animator.SetBool("isMovingRight", true);
+            _animator.SetBool("isIdle", false);
+        }
+        else  // No horizontal movement (Idle)
+        {
+            _animator.SetBool("isMovingLeft", false);
+            _animator.SetBool("isMovingRight", false);
+            _animator.SetBool("isIdle", true);
+        }
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0));
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -9.1f, 9.1f),transform.position.y,0);
