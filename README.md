@@ -1,7 +1,7 @@
 # Astro-Destruction
 A Unity 2d Project similar to the Classic Space Shooter Game. 
 Involves Programming Concepts like OOP, Referencing other scripts etc. 
-Has Several animations icluding playerMovement, Thrusters, PlayerDamaged, Explosion etc.
+Has Several animations including playerMovement, Thrusters, PlayerDamaged, Explosion etc.
 includes logical UI such as ScoreCounter Livescounter etc.
 Consists of 9 C# Scripts Communicating with each other
 You can collect 3 Power-Ups such as Shield,Speed and TripleShot Power-Up
